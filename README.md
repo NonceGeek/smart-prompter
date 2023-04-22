@@ -7,12 +7,16 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Feature's
 
-## Learn more
+  - [ ] Generate a guest based on a cookie when the user is not logged in (OR only support logged user)
+  - [ ] Mock a simple OpenAI Server for develop
+  - [ ] RichText formatting support
+  - [ ] Async execution
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+## Stories
+
+  - [ ] 1 [Direct] Open a session directly from my question
+  - [ ] 2 [SmartMode] System automatic improvement question
+  - [ ] 3 [Template] Customise my questions according to the prompt template(also directly)
+  - [ ] 4 [AdvancedFeature] Improve your prompt based on OpenAI's answers
