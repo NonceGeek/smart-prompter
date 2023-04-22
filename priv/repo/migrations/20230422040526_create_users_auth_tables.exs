@@ -7,17 +7,21 @@ defmodule PureAI.Repo.Migrations.CreateUsersAuthTables do
     create table(:users) do
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
+      add :is_admin, :boolean, default: false
       add :confirmed_at, :naive_datetime
+
       timestamps()
     end
 
     create unique_index(:users, [:email])
+    create index(:users, [:is_admin])
 
     create table(:users_tokens) do
       add :user_id, references(:users, on_delete: :delete_all), null: false
       add :token, :binary, null: false
       add :context, :string, null: false
       add :sent_to, :string
+
       timestamps(updated_at: false)
     end
 

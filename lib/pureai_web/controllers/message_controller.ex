@@ -1,4 +1,6 @@
 defmodule PureAIWeb.MessageController do
+  @moduledoc false
+
   use PureAIWeb, :controller
 
   alias PureAI.Chat
@@ -23,21 +25,5 @@ defmodule PureAIWeb.MessageController do
   def show(conn, %{"id" => id}) do
     message = Chat.get_message!(id)
     render(conn, :show, message: message)
-  end
-
-  def update(conn, %{"id" => id, "message" => message_params}) do
-    message = Chat.get_message!(id)
-
-    with {:ok, %Message{} = message} <- Chat.update_message(message, message_params) do
-      render(conn, :show, message: message)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    message = Chat.get_message!(id)
-
-    with {:ok, %Message{}} <- Chat.delete_message(message) do
-      send_resp(conn, :no_content, "")
-    end
   end
 end

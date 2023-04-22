@@ -29,7 +29,9 @@ defmodule PureAIWeb.Router do
     resources "/prompt_templates", PromptTemplateController, except: [:new, :edit]
 
     resources "/topics", TopicController, except: [:new, :edit]
-    resources "/messages", MessageController, except: [:new, :edit]
+
+    # with valid topic_id
+    resources "/messages", MessageController, only: [:create, :show]
   end
 
   # Other scopes may use custom stacks.
