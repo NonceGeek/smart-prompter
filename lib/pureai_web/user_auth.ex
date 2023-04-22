@@ -1,4 +1,6 @@
 defmodule PureAIWeb.UserAuth do
+  @moduledoc false
+
   use PureAIWeb, :verified_routes
 
   import Plug.Conn

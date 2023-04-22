@@ -18,6 +18,7 @@ defmodule PureAIWeb.PromptTemplateJSON do
   defp data(%PromptTemplate{} = prompt_template) do
     %{
       id: prompt_template.id,
+      title: prompt_template.title,
       content: prompt_template.content,
       is_default: prompt_template.is_default
     }

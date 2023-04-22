@@ -49,8 +49,13 @@ defmodule PureAIWeb.PromptTemplateControllerTest do
   describe "update prompt_template" do
     setup [:create_prompt_template]
 
-    test "renders prompt_template when data is valid", %{conn: conn, prompt_template: %PromptTemplate{id: id} = prompt_template} do
-      conn = put(conn, ~p"/api/prompt_templates/#{prompt_template}", prompt_template: @update_attrs)
+    test "renders prompt_template when data is valid", %{
+      conn: conn,
+      prompt_template: %PromptTemplate{id: id} = prompt_template
+    } do
+      conn =
+        put(conn, ~p"/api/prompt_templates/#{prompt_template}", prompt_template: @update_attrs)
+
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, ~p"/api/prompt_templates/#{id}")
@@ -63,7 +68,9 @@ defmodule PureAIWeb.PromptTemplateControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, prompt_template: prompt_template} do
-      conn = put(conn, ~p"/api/prompt_templates/#{prompt_template}", prompt_template: @invalid_attrs)
+      conn =
+        put(conn, ~p"/api/prompt_templates/#{prompt_template}", prompt_template: @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
