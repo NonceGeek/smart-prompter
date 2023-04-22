@@ -7,7 +7,7 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Feature's
+## Features
 
   - [ ] Generate a guest based on a cookie when the user is not logged in (OR only support logged user)
   - [ ] Mock a simple OpenAI Server for develop
@@ -16,7 +16,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Stories
 
-  - [ ] 1 [Direct] Open a session directly from my question
-  - [ ] 2 [SmartMode] System automatic improvement question
-  - [ ] 3 [Template] Customise my questions according to the prompt template(also directly)
-  - [ ] 4 [AdvancedFeature] Improve your prompt based on OpenAI's answers
+  - [ ] 1 [DirectMode] Initiate my request directly
+  - [ ] 2 [SmartMode] System automatic improvement request
+  - [ ] 3 [Template] Customise my request according to the prompt template(also direct)
+  - [ ] 4 [Advanced] Improve your request based on OpenAI's interactive.
