@@ -1,13 +1,11 @@
-defmodule PureAI.Prompt.Model.PromptTemplate do
-  @moduledoc false
-
+defmodule PureAI.Prompt.PromptTemplate do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "prompt_templates" do
+    field :title, :string
     field :content, :string
     field :is_default, :boolean, default: false
-    field :title, :string
 
     belongs_to :user, PureAI.Accounts.User
 
@@ -17,12 +15,12 @@ defmodule PureAI.Prompt.Model.PromptTemplate do
   @doc false
   def changeset(prompt_template, attrs) do
     required_fields = ~w(
-      title
       content
-      user_id
     )a
 
     optional_fields = ~w(
+      title
+      user_id
       is_default
     )a
 

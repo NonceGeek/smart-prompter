@@ -4,10 +4,9 @@ defmodule PureAI.Prompt do
   """
 
   import Ecto.Query, warn: false
-
   alias PureAI.Repo
 
-  alias PureAI.Prompt.Model.PromptTemplate
+  alias PureAI.Prompt.PromptTemplate
 
   @doc """
   Returns the list of prompt_templates.

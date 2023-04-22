@@ -21,6 +21,14 @@ defmodule PureAIWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    resources "/prompt_templates", PromptTemplateController, except: [:new, :edit]
+  end
+
+  scope "/api", PureAIWeb do
+    pipe_through :api
+
+    resources "/prompt_templates", PromptTemplateController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
