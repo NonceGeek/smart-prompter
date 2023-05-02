@@ -12,7 +12,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   - [ ] Generate a guest based on a cookie when the user is not logged in (OR only support logged user)
   - [ ] Mock a simple OpenAI Server for develop
   - [ ] RichText formatting support
-  - [ ] Async execution
+  - [x] Async execution
 
 ## Stories
 
