@@ -52,7 +52,8 @@ defmodule PureAI.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:openai, "~> 0.4.2"},
-      {:credo, "~> 1.7"}
+      {:credo, "~> 1.7"},
+      {:oban, "~> 2.15"}
     ]
   end
 
