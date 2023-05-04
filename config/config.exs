@@ -62,7 +62,8 @@ config :phoenix, :json_library, Jason
 
 config :openai,
   # find it at https://platform.openai.com/account/api-keys
-  api_key: "your-api-key"
+  api_key: "your-api-key",
+  client: PureAI.OpenAIMock
 
 # # find it at https://platform.openai.com/account/org-settings under "Organization ID"
 # organization_key: "your-organization-key",

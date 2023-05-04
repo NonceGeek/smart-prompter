@@ -17,9 +17,9 @@ defmodule PureAI.Application do
       # Start Finch
       {Finch, name: PureAI.Finch},
       # Start the Endpoint (http/https)
-      PureAIWeb.Endpoint
-      # Start a worker by calling: PureAI.Worker.start_link(arg)
-      # {PureAI.Worker, arg}
+      PureAIWeb.Endpoint,
+      # mock client
+      {PureAI.OpenAIMock, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
