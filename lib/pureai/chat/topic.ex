@@ -6,7 +6,6 @@ defmodule PureAI.Chat.Topic do
 
   schema "topics" do
     field :metadata, :map
-    field :prompt_text, :string
 
     belongs_to :user, PureAI.Accounts.User
     belongs_to :prompt_template, PureAI.Prompt.PromptTemplate
@@ -19,7 +18,6 @@ defmodule PureAI.Chat.Topic do
   @doc false
   def changeset(topic, attrs) do
     required_fields = ~w(
-     prompt_text
     )a
 
     optional_fields = ~w(

@@ -3,7 +3,12 @@ defmodule PureAI.Repo.Migrations.CreateMessages do
 
   def change do
     create table(:messages) do
+      add :role, :string
       add :content, :text
+
+      add :finish_reason, :string
+      add :index, :integer
+
       add :user_id, :integer
       add :topic_id, :integer
 
