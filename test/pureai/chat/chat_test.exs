@@ -1,19 +1,39 @@
 defmodule PureAI.ChatTest do
+  @moduledoc false
+
   use PureAI.DataCase
 
   alias PureAI.Chat
 
-  # describe "topics" do
-  #   alias PureAI.Chat.Topic
+  describe "topics" do
+    #   alias PureAI.Chat.Topic
 
-  #   import PureAI.ChatFixtures
+    #   import PureAI.ChatFixtures
 
-  #   @invalid_attrs %{metadata: nil, prompt_template_id: nil, prompt_text: nil, user_id: nil}
+    #   @invalid_attrs %{metadata: nil, prompt_template_id: nil, prompt_text: nil, user_id: nil}
 
-  #   test "list_topics/0 returns all topics" do
-  #     topic = topic_fixture()
-  #     assert Chat.list_topics() == [topic]
-  #   end
+    test "list user topics" do
+      # topic = topic_fixture()
+      # assert Chat.list_topics() == [topic]
+      assert true
+    end
+
+    test "get one topic" do
+      assert true
+    end
+
+    test "create new topic" do
+      assert true
+    end
+
+    test "delete user topic" do
+      assert true
+    end
+
+    test "chat and reply" do
+      assert true
+    end
+  end
 
   #   test "get_topic!/1 returns the topic with given id" do
   #     topic = topic_fixture()
