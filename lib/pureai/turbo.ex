@@ -6,11 +6,9 @@ defmodule PureAI.Turbo do
   import Ecto.Query, warn: false
 
   alias PureAI.Repo
-  alias PureAI.QueryBuilder
 
   def find_all(queryable, filter) do
     queryable
-    |> QueryBuilder.filter_pack(filter)
     |> paginator(filter)
     |> done()
   end

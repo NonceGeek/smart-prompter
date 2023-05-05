@@ -21,7 +21,7 @@ defmodule PureAIWeb.TopicController do
   end
 
   def show(conn, %{"id" => id}) do
-    topic = Chat.get_topic!(id)
+    {:ok, topic} = Chat.get_topic(id)
     render(conn, :show, topic: topic)
   end
 

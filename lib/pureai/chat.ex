@@ -66,6 +66,7 @@ defmodule PureAI.Chat do
     # - [x] create topic
     # - [x] create message
     # - [x] job -> openai
+    attrs = PureAI.MapEnhance.atomize_keys(attrs)
 
     with true <- can_create_topic?() do
       Multi.new()

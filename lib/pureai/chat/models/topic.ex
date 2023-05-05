@@ -23,6 +23,7 @@ defmodule PureAI.Chat.Topic do
 
     optional_fields = ~w(
      user_id
+     name
      prompt_template_id
      metadata
     )a
