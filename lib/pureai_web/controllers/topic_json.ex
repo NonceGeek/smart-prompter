@@ -18,7 +18,6 @@ defmodule PureAIWeb.TopicJSON do
   end
 
   defp data(%Topic{} = topic) do
-
     IO.inspect(topic, label: "topic")
 
     %{
@@ -27,17 +26,20 @@ defmodule PureAIWeb.TopicJSON do
       name: topic.name,
       prompt_template_id: topic.prompt_template_id,
       metadata: topic.metadata,
-      messages: for message <- topic.messages, do: data(message)
+      messages: Enum.map(topic.messages, fn message -> data(message) end)
     }
   end
 
   defp data(%Message{} = message) do
     %{
       id: message.id,
-      # user_id: message.user_id,
-      # content: message.content,
-      # topic_id: message.topic_id,
-      # metadata: message.metadata
+      user_id: message.user_id,
+      content: message.content,
+      role: message.role,
+      index: message.index,
+      finish_reason: message.finish_reason,
+      topic_id: message.topic_id,
+      metadata: message.metadata
     }
   end
 end

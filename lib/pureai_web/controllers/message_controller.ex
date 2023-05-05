@@ -14,7 +14,9 @@ defmodule PureAIWeb.MessageController do
   end
 
   def create(conn, %{"message" => message_params}) do
-    with {:ok, %Message{} = message} <- Chat.create_message(message_params) do
+    %{"topic_id" => topic_id, "content" => content} = message_params
+
+    with {:ok, %Message{} = message} <- Chat.add_message(topic_id, content) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/messages/#{message}")
