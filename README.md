@@ -16,7 +16,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Stories
 
-  - [ ] 1 [DirectMode] Initiate my request directly
+  - [x] 1 [DirectMode] Initiate my request directly
   - [ ] 2 [SmartMode] System automatic improvement request
   - [ ] 3 [Template] Customise my request according to the prompt template(also direct)
   - [ ] 4 [Advanced] Improve your request based on OpenAI's interactive.
