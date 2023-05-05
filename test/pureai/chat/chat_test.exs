@@ -29,7 +29,6 @@ defmodule PureAI.ChatTest do
       assert true
     end
 
-
     test "delete user topic" do
       assert true
     end

@@ -25,8 +25,7 @@ defmodule PureAI.PromptTest do
     test "create_prompt_template/1 with valid data creates a prompt_template" do
       valid_attrs = %{content: "some content", is_default: true}
 
-      assert {:ok, %PromptTemplate{} = prompt_template} =
-               Prompt.create_prompt_template(valid_attrs)
+      assert {:ok, %PromptTemplate{} = prompt_template} = Prompt.create_prompt_template(valid_attrs)
 
       assert prompt_template.content == "some content"
       assert prompt_template.is_default == true
@@ -40,8 +39,7 @@ defmodule PureAI.PromptTest do
       prompt_template = prompt_template_fixture()
       update_attrs = %{content: "some updated content", is_default: false}
 
-      assert {:ok, %PromptTemplate{} = prompt_template} =
-               Prompt.update_prompt_template(prompt_template, update_attrs)
+      assert {:ok, %PromptTemplate{} = prompt_template} = Prompt.update_prompt_template(prompt_template, update_attrs)
 
       assert prompt_template.content == "some updated content"
       assert prompt_template.is_default == false
@@ -50,8 +48,7 @@ defmodule PureAI.PromptTest do
     test "update_prompt_template/2 with invalid data returns error changeset" do
       prompt_template = prompt_template_fixture()
 
-      assert {:error, %Ecto.Changeset{}} =
-               Prompt.update_prompt_template(prompt_template, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Prompt.update_prompt_template(prompt_template, @invalid_attrs)
 
       assert prompt_template == Prompt.get_prompt_template!(prompt_template.id)
     end

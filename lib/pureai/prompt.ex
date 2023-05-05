@@ -50,9 +50,11 @@ defmodule PureAI.Prompt do
 
   """
   def create_prompt_template(attrs \\ %{}) do
-    %PromptTemplate{}
-    |> PromptTemplate.changeset(attrs)
-    |> Repo.insert()
+    with true <- can_create_template?() do
+      %PromptTemplate{}
+      |> PromptTemplate.changeset(attrs)
+      |> Repo.insert()
+    end
   end
 
   @doc """
@@ -68,9 +70,11 @@ defmodule PureAI.Prompt do
 
   """
   def update_prompt_template(%PromptTemplate{} = prompt_template, attrs) do
-    prompt_template
-    |> PromptTemplate.changeset(attrs)
-    |> Repo.update()
+    with true <- can_update_template?() do
+      prompt_template
+      |> PromptTemplate.changeset(attrs)
+      |> Repo.update()
+    end
   end
 
   @doc """
@@ -86,7 +90,9 @@ defmodule PureAI.Prompt do
 
   """
   def delete_prompt_template(%PromptTemplate{} = prompt_template) do
-    Repo.delete(prompt_template)
+    with true <- can_delete_template?() do
+      Repo.delete(prompt_template)
+    end
   end
 
   @doc """
@@ -101,4 +107,8 @@ defmodule PureAI.Prompt do
   def change_prompt_template(%PromptTemplate{} = prompt_template, attrs \\ %{}) do
     PromptTemplate.changeset(prompt_template, attrs)
   end
+
+  defp can_create_template?, do: true
+  defp can_update_template?, do: true
+  defp can_delete_template?, do: true
 end
