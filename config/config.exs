@@ -61,7 +61,7 @@ config :phoenix, :json_library, Jason
 
 config :openai,
   # find it at https://platform.openai.com/account/api-keys
-  api_key: "your-api-key",
+  api_key: System.get_env("OPENAI_KEY"),
   client: PureAI.OpenAIMock,
   # client: OpenAI
   http_options: [recv_timeout: 60_000]

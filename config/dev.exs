@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :pureai, PureAI.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "pureai_dev",
+  username: System.get_env("DB_USER") || "postgres",
+  password: System.get_env("DB_PWD") || "postgres",
+  database: System.get_env("DB_NAME") || "pureai_dev",
+  hostname: System.get_env("DB_HOST") || "localhost",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
