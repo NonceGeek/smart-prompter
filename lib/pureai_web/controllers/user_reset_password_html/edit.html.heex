@@ -9,12 +9,7 @@
     </.error>
 
     <.input field={f[:password]} type="password" label="New Password" required />
-    <.input
-      field={f[:password_confirmation]}
-      type="password"
-      label="Confirm new password"
-      required
-    />
+    <.input field={f[:password_confirmation]} type="password" label="Confirm new password" required />
     <:actions>
       <.button phx-disable-with="Resetting..." class="w-full">
         Reset password
@@ -23,7 +18,6 @@
   </.simple_form>
 
   <p class="text-center text-sm mt-4">
-    <.link href={~p"/users/register"}>Register</.link>
-    | <.link href={~p"/users/log_in"}>Log in</.link>
+    <.link href={~p"/users/register"}>Register</.link> | <.link href={~p"/users/log_in"}>Log in</.link>
   </p>
 </div>
