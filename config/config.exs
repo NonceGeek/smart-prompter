@@ -63,6 +63,7 @@ config :openai,
   # find it at https://platform.openai.com/account/api-keys
   api_key: "your-api-key",
   client: PureAI.OpenAIMock
+  # client: OpenAI
 
 # # find it at https://platform.openai.com/account/org-settings under "Organization ID"
 # organization_key: "your-organization-key",
