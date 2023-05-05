@@ -16,6 +16,9 @@ defmodule PureAI.Chat.Job do
          {:ok, %{choices: [data], usage: usage}} <- OpenAIHandler.chat_completion(messages) do
       %{"finish_reason" => finish_reason, "index" => index, "message" => %{"content" => content, "role" => role}} = data
 
+      Logger.debug("message: %{inspect(messages)}")
+      IO.inspect(messages, label: "messages")
+
       attrs = %{
         topic_id: topic_id,
         metadata: usage,
@@ -25,7 +28,7 @@ defmodule PureAI.Chat.Job do
         index: index
       }
 
-      Logger.info("attrs: %{inspect(attrs)}")
+      # Logger.info("attrs: %{inspect(attrs)}")
 
       Turbo.create(Message, attrs)
     else

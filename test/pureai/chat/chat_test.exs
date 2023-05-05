@@ -4,6 +4,7 @@ defmodule PureAI.ChatTest do
   use PureAI.DataCase
 
   import PureAI.ChatFixtures
+  import PureAI.PromptFixtures
 
   alias PureAI.Chat
   alias PureAI.Repo
@@ -26,7 +27,16 @@ defmodule PureAI.ChatTest do
     end
 
     test "create topic with template" do
-      assert true
+      template =
+        prompt_template_fixture(%{
+          title: "Act as a English Teacher and Improver",
+          content:
+            "I want you to act as a spoken English teacher and improver. I will speak to you in English and you will reply to me in English to practice my spoken English. I want you to keep your reply neat, limiting the reply to 100 words. I want you to strictly correct my grammar mistakes, typos, and factual errors. I want you to ask me a question in your reply. Now let’s start practicing, you could ask me a question first. Remember, I want you to strictly correct my grammar mistakes, typos, and factual errors."
+        })
+
+      topic = topic_fixture(%{prompt_template_id: template.id, content: "hello"})
+
+      assert %Topic{} = topic
     end
 
     test "delete user topic" do

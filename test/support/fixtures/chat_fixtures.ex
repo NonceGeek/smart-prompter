@@ -12,7 +12,6 @@ defmodule PureAI.ChatFixtures do
       attrs
       |> Enum.into(%{
         content: "some content",
-        prompt_template_id: 42,
         user_id: 42
       })
       |> PureAI.Chat.create_topic()

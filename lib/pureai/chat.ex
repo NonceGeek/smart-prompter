@@ -8,6 +8,7 @@ defmodule PureAI.Chat do
   alias Ecto.Multi
   alias PureAI.{Repo, Turbo}
 
+  alias PureAI.Prompt.PromptTemplate
   alias PureAI.Chat.{Topic, Message}
 
   @doc """
@@ -69,6 +70,7 @@ defmodule PureAI.Chat do
     with true <- can_create_topic?() do
       Multi.new()
       |> do_create_topic(attrs)
+      |> do_create_template_message(attrs)
       |> do_create_message(attrs)
       |> Repo.transaction()
       |> case do
@@ -92,6 +94,26 @@ defmodule PureAI.Chat do
 
     Multi.run(multi, :create_topic, run_fn)
   end
+
+  defp do_create_template_message(multi, %{prompt_template_id: prompt_template_id} = attrs) do
+    run_fn = fn _, %{create_topic: topic} ->
+      with {:ok, template} <- Turbo.get(PromptTemplate, prompt_template_id) do
+        new_attrs = %{
+          topic_id: topic.id,
+          role: :system,
+          content: template.content
+        }
+
+        Turbo.create(Message, new_attrs)
+      else
+        _ -> {:error, :not_found_template}
+      end
+    end
+
+    Multi.run(multi, :create_template_message, run_fn)
+  end
+
+  defp do_create_template_message(multi, _), do: multi
 
   defp do_create_message(multi, %{content: content} = attrs) do
     run_fn = fn _, %{create_topic: topic} ->
