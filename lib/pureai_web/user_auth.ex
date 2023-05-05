@@ -96,18 +96,25 @@ defmodule PureAIWeb.UserAuth do
     assign(conn, :current_user, user)
   end
 
+  # [ ] TODO - Implement this
   defp ensure_user_token(conn) do
-    if token = get_session(conn, :user_token) do
-      {token, conn}
+    with ["Bearer " <> user_token] <- get_req_header(conn, "authorization") do
+      {user_token, conn}
     else
-      conn = fetch_cookies(conn, signed: [@remember_me_cookie])
-
-      if token = conn.cookies[@remember_me_cookie] do
-        {token, put_token_in_session(conn, token)}
-      else
-        {nil, conn}
-      end
+      _ -> {nil, conn}
     end
+
+    # if token = get_session(conn, :user_token) do
+    #   {token, conn}
+    # else
+    #   conn = fetch_cookies(conn, signed: [@remember_me_cookie])
+
+    #   if token = conn.cookies[@remember_me_cookie] do
+    #     {token, put_token_in_session(conn, token)}
+    #   else
+    #     {nil, conn}
+    #   end
+    # end
   end
 
   @doc """
