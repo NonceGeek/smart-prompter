@@ -17,6 +17,7 @@ defmodule PureAI.Repo.Migrations.CreateMessages do
       timestamps()
     end
 
+    create index(:messages, [:role])
     create index(:messages, [:user_id])
     create index(:messages, [:topic_id])
   end

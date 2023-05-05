@@ -12,5 +12,6 @@ defmodule PureAI.Repo.Migrations.CreatePromptTemplates do
     end
 
     create index(:prompt_templates, [:user_id])
+    create index(:prompt_templates, [:is_default])
   end
 end
