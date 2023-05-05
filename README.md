@@ -20,3 +20,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   - [ ] 2 [SmartMode] System automatic improvement request
   - [x] 3 [Template] Customise my request according to the prompt template(also direct)
   - [x] 4 [Advanced] Improve your request based on OpenAI's interactive.
+
+
+## References
+
+  - [OpenAI API](https://platform.openai.com/docs/api-reference/chat/create)
+  - [PromptPerfect](https://promptperfect.jinaai.cn/prompts)
+  - [prompts.chat](https://prompts.chat/#act-as-a-linux-terminal)
+  - [OpenAI Elixir Client](https://github.com/mgallo/openai.ex)

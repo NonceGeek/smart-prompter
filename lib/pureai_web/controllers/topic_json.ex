@@ -18,8 +18,6 @@ defmodule PureAIWeb.TopicJSON do
   end
 
   defp data(%Topic{} = topic) do
-    IO.inspect(topic, label: "topic")
-
     %{
       id: topic.id,
       user_id: topic.user_id,
