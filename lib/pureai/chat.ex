@@ -4,7 +4,8 @@ defmodule PureAI.Chat do
   """
 
   import Ecto.Query, warn: false
-  alias PureAI.Repo
+
+  alias PureAI.{Repo, Turbo}
 
   alias PureAI.Chat.Topic
 
@@ -36,6 +37,15 @@ defmodule PureAI.Chat do
 
   """
   def get_topic!(id), do: Repo.get!(Topic, id)
+
+  @doc """
+  get topic
+  """
+  def get_topic(clauses) when is_binary(clauses) or is_integer(clauses),
+    do: Turbo.get(Topic, clauses)
+
+  def get_topic(clauses) when is_list(clauses) or is_map(clauses),
+    do: Turbo.get_by(Topic, clauses)
 
   @doc """
   Creates a topic.

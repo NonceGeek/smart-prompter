@@ -23,6 +23,10 @@ defmodule PureAI.ChatTest do
     end
 
     test "create new topic" do
+      # - [ ] create topic
+      # - [ ] add message
+      # - [ ] role = user, content = content
+
       assert true
     end
 
