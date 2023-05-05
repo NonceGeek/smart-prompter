@@ -5,6 +5,7 @@ defmodule PureAI.Chat.Topic do
   import Ecto.Changeset
 
   schema "topics" do
+    field :name, :string
     field :metadata, :map
 
     belongs_to :user, PureAI.Accounts.User

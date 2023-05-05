@@ -42,8 +42,8 @@ defmodule PureAI.Chat do
   @doc """
   get topic
   """
-  def get_topic(clauses) when is_binary(clauses) or is_integer(clauses), do: Turbo.get(Topic, clauses)
-  def get_topic(clauses) when is_list(clauses) or is_map(clauses), do: Turbo.get_by(Topic, clauses)
+  def get_topic(clauses) when is_binary(clauses) or is_integer(clauses), do: Turbo.get(Topic, clauses, preload: [:messages])
+  def get_topic(clauses) when is_list(clauses) or is_map(clauses), do: Turbo.get_by(Topic, clauses, preload: [:messages])
 
   @doc """
   get topic messages, desc by inserted_at
@@ -59,39 +59,30 @@ defmodule PureAI.Chat do
   end
 
   @doc """
-  Creates a topic.
-
-  ## Examples
-
-      iex> create_topic(%{field: value})
-      {:ok, %Topic{}}
-
-      iex> create_topic(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
+  Creates a topic with first message
   """
   def create_topic(attrs \\ %{}) do
     # - [x] create topic
     # - [x] create message
     # - [x] job -> openai
 
-    Multi.new()
-    |> do_create_topic(attrs)
-    |> do_create_message(attrs)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{create_topic: topic, create_message: message}} ->
-        %{type: "chat_completion", topic_id: topic.id}
-        |> PureAI.Chat.Job.new()
-        |> Oban.insert()
+    with true <- can_create_topic?() do
+      Multi.new()
+      |> do_create_topic(attrs)
+      |> do_create_message(attrs)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{create_topic: topic, create_message: message}} ->
+          %{type: "chat_completion", topic_id: topic.id}
+          |> PureAI.Chat.Job.new()
+          |> Oban.insert()
 
-        {:ok, Repo.preload(topic, [:messages])}
+          {:ok, Repo.preload(topic, [:messages])}
 
-      error ->
-        error
+        error ->
+          error
+      end
     end
-
-    # Oban.insert(:mint_profile_job, Lumin.Accounts.Job.new(%{type: "mint_profile", params: request, address: to_string(current_user.address_hash)}))
   end
 
   defp do_create_topic(multi, attrs) do
@@ -114,6 +105,31 @@ defmodule PureAI.Chat do
     end
 
     Multi.run(multi, :create_message, run_fn)
+  end
+
+  @doc """
+  add topic message
+  """
+  def add_message(topic_id, content) do
+    request = %{
+      topic_id: topic_id,
+      role: :user,
+      content: content
+    }
+
+    with true <- can_add_message?(),
+         {:ok, message} <- Turbo.create(Message, request) do
+      %{type: "chat_completion", topic_id: message.topic_id}
+      |> PureAI.Chat.Job.new()
+      |> Oban.insert()
+
+      {:ok, message}
+
+      # TODO [ ] boradcast
+    else
+      {:error, _} ->
+        {:error, "add message failed"}
+    end
   end
 
   @doc """
@@ -258,6 +274,9 @@ defmodule PureAI.Chat do
   def change_message(%Message{} = message, attrs \\ %{}) do
     Message.changeset(message, attrs)
   end
+
+  defp can_create_topic?(), do: true
+  defp can_add_message?(), do: true
 
   # defp done({:ok, %{create_topic: result}}), do: {:ok, result}
   defp done({:ok, %{create_message: result}}), do: {:ok, result}
