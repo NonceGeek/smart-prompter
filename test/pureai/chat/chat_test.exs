@@ -23,6 +23,9 @@ defmodule PureAI.ChatTest do
 
     test "create new topic" do
       topic = topic_fixture()
+
+      IO.inspect(topic, label: "topic")
+
       assert %Topic{} = topic
     end
 

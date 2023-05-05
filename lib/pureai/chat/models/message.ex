@@ -11,6 +11,7 @@ defmodule PureAI.Chat.Message do
 
     field :finish_reason, :string
     field :index, :integer
+    field :position, :integer, default: 0
 
     field :metadata, :map
 
@@ -26,6 +27,7 @@ defmodule PureAI.Chat.Message do
       role
       content
       topic_id
+      position
     )a
 
     optional_fields = ~w(

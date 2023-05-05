@@ -24,6 +24,7 @@ defmodule PureAI.Chat.Job do
         metadata: usage,
         content: content,
         finish_reason: finish_reason,
+        position: Chat.next_position(topic_id),
         role: role,
         index: index
       }

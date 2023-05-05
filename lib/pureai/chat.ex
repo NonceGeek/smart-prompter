@@ -53,7 +53,7 @@ defmodule PureAI.Chat do
     from(
       m in Message,
       where: m.topic_id == ^topic_id,
-      order_by: [desc: m.inserted_at],
+      order_by: [asc: m.position],
       select: %{role: m.role, content: m.content}
     )
     |> Repo.all()
@@ -66,6 +66,7 @@ defmodule PureAI.Chat do
     # - [x] create topic
     # - [x] create message
     # - [x] job -> openai
+
     attrs = PureAI.MapEnhance.atomize_keys(attrs)
 
     with true <- can_create_topic?() do
@@ -102,6 +103,7 @@ defmodule PureAI.Chat do
         new_attrs = %{
           topic_id: topic.id,
           role: :system,
+          position: 1,
           content: template.content
         }
 
@@ -118,9 +120,16 @@ defmodule PureAI.Chat do
 
   defp do_create_message(multi, %{content: content} = attrs) do
     run_fn = fn _, %{create_topic: topic} ->
+      position =
+        case Map.get(attrs, :prompt_template_id) do
+          nil -> 1
+          _ -> 2
+        end
+
       new_attrs = %{
         role: :user,
         content: content,
+        position: position,
         topic_id: topic.id
       }
 
@@ -130,6 +139,14 @@ defmodule PureAI.Chat do
     Multi.run(multi, :create_message, run_fn)
   end
 
+  def next_position(topic_id) do
+    {:ok, cur_count} =
+      from(m in Message, where: m.topic_id == ^topic_id)
+      |> Turbo.count()
+
+    cur_count + 1
+  end
+
   @doc """
   add topic message
   """
@@ -137,6 +154,7 @@ defmodule PureAI.Chat do
     request = %{
       topic_id: topic_id,
       role: :user,
+      position: next_position(topic_id),
       content: content
     }
 
