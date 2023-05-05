@@ -111,7 +111,6 @@ defmodule PureAI.OpenAIMock do
         "openai_models.json"
       ])
       |> Path.join()
-      |> IO.inspect(label: "xxxxxxxxxxxxx")
       |> File.read()
 
     {:ok, Jason.decode!(data)}

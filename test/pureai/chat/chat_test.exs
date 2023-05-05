@@ -4,6 +4,9 @@ defmodule PureAI.ChatTest do
   use PureAI.DataCase
 
   alias PureAI.Chat
+  alias PureAI.Repo
+  # alias PureAI.Turbo
+  alias PureAI.Chat.Topic
 
   describe "topics" do
     #   alias PureAI.Chat.Topic
@@ -23,11 +26,15 @@ defmodule PureAI.ChatTest do
     end
 
     test "create new topic" do
-      # - [ ] create topic
-      # - [ ] add message
-      # - [ ] role = user, content = content
+      attrs = %{
+        content: "hello world",
+        user_id: 1,
+        prompt_template: 1
+      }
 
-      assert true
+      {:ok, topic} = Chat.create_topic(attrs)
+
+      assert %Topic{} = topic
     end
 
     test "delete user topic" do

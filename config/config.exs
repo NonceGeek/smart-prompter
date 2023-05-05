@@ -73,6 +73,11 @@ config :openai,
 # # but only in your test config!
 # api_url: "http://localhost/"
 
+config :pureai, Oban,
+  repo: PureAI.Repo,
+  plugins: [{Oban.Plugins.Pruner, max_age: 3 * 24 * 60 * 60}],
+  queues: [default: 10, openai: 10]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

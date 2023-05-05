@@ -5,9 +5,10 @@ defmodule PureAI.Chat do
 
   import Ecto.Query, warn: false
 
+  alias Ecto.Multi
   alias PureAI.{Repo, Turbo}
 
-  alias PureAI.Chat.Topic
+  alias PureAI.Chat.{Topic, Message}
 
   @doc """
   Returns the list of topics.
@@ -41,11 +42,21 @@ defmodule PureAI.Chat do
   @doc """
   get topic
   """
-  def get_topic(clauses) when is_binary(clauses) or is_integer(clauses),
-    do: Turbo.get(Topic, clauses)
+  def get_topic(clauses) when is_binary(clauses) or is_integer(clauses), do: Turbo.get(Topic, clauses)
+  def get_topic(clauses) when is_list(clauses) or is_map(clauses), do: Turbo.get_by(Topic, clauses)
 
-  def get_topic(clauses) when is_list(clauses) or is_map(clauses),
-    do: Turbo.get_by(Topic, clauses)
+  @doc """
+  get topic messages, desc by inserted_at
+  """
+  def get_topic_messages(topic_id) do
+    from(
+      m in Message,
+      where: m.topic_id == ^topic_id,
+      order_by: [desc: m.inserted_at],
+      select: %{role: m.role, content: m.content}
+    )
+    |> Repo.all()
+  end
 
   @doc """
   Creates a topic.
@@ -60,9 +71,49 @@ defmodule PureAI.Chat do
 
   """
   def create_topic(attrs \\ %{}) do
-    %Topic{}
-    |> Topic.changeset(attrs)
-    |> Repo.insert()
+    # - [x] create topic
+    # - [x] create message
+    # - [x] job -> openai
+
+    Multi.new()
+    |> do_create_topic(attrs)
+    |> do_create_message(attrs)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{create_topic: topic, create_message: message}} ->
+        %{type: "chat_completion", topic_id: topic.id}
+        |> PureAI.Chat.Job.new()
+        |> Oban.insert()
+
+        {:ok, Repo.preload(topic, [:messages])}
+
+      error ->
+        error
+    end
+
+    # Oban.insert(:mint_profile_job, Lumin.Accounts.Job.new(%{type: "mint_profile", params: request, address: to_string(current_user.address_hash)}))
+  end
+
+  defp do_create_topic(multi, attrs) do
+    run_fn = fn _, _ ->
+      Turbo.create(Topic, attrs)
+    end
+
+    Multi.run(multi, :create_topic, run_fn)
+  end
+
+  defp do_create_message(multi, %{content: content} = attrs) do
+    run_fn = fn _, %{create_topic: topic} ->
+      new_attrs = %{
+        role: :user,
+        content: content,
+        topic_id: topic.id
+      }
+
+      Turbo.create(Message, new_attrs)
+    end
+
+    Multi.run(multi, :create_message, run_fn)
   end
 
   @doc """
@@ -207,4 +258,9 @@ defmodule PureAI.Chat do
   def change_message(%Message{} = message, attrs \\ %{}) do
     Message.changeset(message, attrs)
   end
+
+  # defp done({:ok, %{create_topic: result}}), do: {:ok, result}
+  defp done({:ok, %{create_message: result}}), do: {:ok, result}
+  defp done({:error, :create_topic, error, _}), do: {:error, error}
+  defp done({:error, error}), do: {:error, error}
 end

@@ -10,7 +10,7 @@ defmodule PureAI.Chat.Message do
     field :content, :string
 
     field :finish_reason, :string
-    field :index, :string
+    field :index, :integer
 
     field :metadata, :map
 

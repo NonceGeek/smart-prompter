@@ -19,7 +19,8 @@ defmodule PureAI.Application do
       # Start the Endpoint (http/https)
       PureAIWeb.Endpoint,
       # mock client
-      {PureAI.OpenAIMock, []}
+      {PureAI.OpenAIMock, []},
+      {Oban, Application.fetch_env!(:pureai, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -56,7 +56,10 @@ defmodule PureAI.MixProject do
       # job
       {:oban, "~> 2.15"},
       # pagi
-      {:scrivener_ecto, "~> 2.7"}
+      {:scrivener_ecto, "~> 2.7"},
+
+      # faker data
+      {:ex_machina, "~> 2.7"}
     ]
   end
 
