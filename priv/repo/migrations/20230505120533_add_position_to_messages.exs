@@ -8,5 +8,4 @@ defmodule PureAI.Repo.Migrations.AddPositionToMessages do
 
     create index(:messages, [:position])
   end
-
 end
