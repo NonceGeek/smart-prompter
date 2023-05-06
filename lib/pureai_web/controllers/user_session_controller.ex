@@ -1,17 +1,17 @@
 defmodule PureAIWeb.UserSessionController do
+  @moduledoc false
+
   use PureAIWeb, :controller
 
   alias PureAI.Accounts
   alias PureAIWeb.UserAuth
 
-  def new(conn, _params) do
-    render(conn, :new, error_message: nil)
-  end
+  action_fallback PureAIWeb.FallbackController
 
   def create(conn, %{"user" => user_params}) do
     %{"email" => email, "password" => password} = user_params
 
-    if user = Accounts.get_user_by_email_and_password(email, password) do
+    if {:ok, user} = Accounts.get_user_by_email_and_password(email, password) do
       conn
       |> put_flash(:info, "Welcome back!")
       |> UserAuth.log_in_user(user, user_params)

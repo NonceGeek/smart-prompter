@@ -42,7 +42,11 @@ defmodule PureAI.Accounts.UserToken do
   session they deem invalid.
   """
   def build_session_token(user) do
-    token = :crypto.strong_rand_bytes(@rand_size)
+    token =
+      @rand_size
+      |> :crypto.strong_rand_bytes()
+      |> Base.url_encode64(padding: false)
+
     {token, %UserToken{token: token, context: "session", user_id: user.id}}
   end
 
