@@ -74,11 +74,6 @@ defmodule PureAIWeb.Router do
   end
 
   scope "/api", PureAIWeb.API do
-    # - [ ] register
-    # - [ ] login
-    # - [ ] logout
-    # - [ ] get current user
-
     pipe_through [:api, :redirect_if_user_is_authenticated]
 
     post "/users/register", UserRegistrationController, :create
