@@ -3,7 +3,7 @@ defmodule PureAI.OpenAIHandler do
 
   require Logger
 
-  @client Application.get_env(:openai, :client)
+  @client Application.compile_env(:openai, :client)
   @chat_completion_model "gpt-3.5-turbo"
 
   def chat_completion(messages) do

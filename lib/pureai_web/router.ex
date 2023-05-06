@@ -15,6 +15,7 @@ defmodule PureAIWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_current_user
   end
 
   scope "/", PureAIWeb do
@@ -33,11 +34,6 @@ defmodule PureAIWeb.Router do
     # with valid topic_id
     resources "/messages", MessageController, only: [:create, :show]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", PureAIWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:pureai, :dev_routes) do
@@ -81,7 +77,7 @@ defmodule PureAIWeb.Router do
   end
 
   scope "/api", PureAIWeb.API do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:api, :require_authenticated_user]
 
     get "/current_user", UserSessionController, :current_user
   end

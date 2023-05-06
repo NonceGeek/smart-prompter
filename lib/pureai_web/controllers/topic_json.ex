@@ -18,13 +18,20 @@ defmodule PureAIWeb.TopicJSON do
   end
 
   defp data(%Topic{} = topic) do
+    messages =
+      if is_list(topic.messages) do
+        Enum.map(topic.messages, fn message -> data(message) end)
+      else
+        nil
+      end
+
     %{
       id: topic.id,
       user_id: topic.user_id,
       name: topic.name,
       prompt_template_id: topic.prompt_template_id,
       metadata: topic.metadata,
-      messages: Enum.map(topic.messages, fn message -> data(message) end)
+      messages: messages
     }
   end
 
