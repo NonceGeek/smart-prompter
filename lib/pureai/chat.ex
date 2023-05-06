@@ -20,8 +20,9 @@ defmodule PureAI.Chat do
       [%Topic{}, ...]
 
   """
-  def list_topics do
-    Repo.all(Topic)
+  def list_topics(current_user) do
+    from(t in Topic, where: t.user_id == ^current_user.id, order_by: [asc: t.inserted_at])
+    |> Repo.all()
   end
 
   @doc """
@@ -62,16 +63,16 @@ defmodule PureAI.Chat do
   @doc """
   Creates a topic with first message
   """
-  def create_topic(attrs \\ %{}) do
+  def create_topic(attrs, current_user) do
     # - [x] create topic
     # - [x] create message
     # - [x] job -> openai
 
     attrs = PureAI.MapEnhance.atomize_keys(attrs)
 
-    with true <- can_create_topic?() do
+    with true <- can_create_topic?(current_user) do
       Multi.new()
-      |> do_create_topic(attrs)
+      |> do_create_topic(attrs, current_user)
       |> do_create_template_message(attrs)
       |> do_create_message(attrs)
       |> Repo.transaction()
@@ -89,9 +90,10 @@ defmodule PureAI.Chat do
     end
   end
 
-  defp do_create_topic(multi, attrs) do
+  defp do_create_topic(multi, attrs, current_user) do
     run_fn = fn _, _ ->
-      Turbo.create(Topic, attrs)
+      new_attrs = attrs |> Map.put(:user_id, current_user.id)
+      Turbo.create(Topic, new_attrs)
     end
 
     Multi.run(multi, :create_topic, run_fn)
@@ -150,7 +152,7 @@ defmodule PureAI.Chat do
   @doc """
   add topic message
   """
-  def add_message(topic_id, content) do
+  def add_message(topic_id, content, current_user) do
     request = %{
       topic_id: topic_id,
       role: :user,
@@ -158,7 +160,7 @@ defmodule PureAI.Chat do
       content: content
     }
 
-    with true <- can_add_message?(),
+    with true <- can_add_message?(current_user),
          {:ok, message} <- Turbo.create(Message, request) do
       %{type: "chat_completion", topic_id: message.topic_id}
       |> PureAI.Chat.Job.new()
@@ -203,7 +205,7 @@ defmodule PureAI.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_topic(%Topic{} = topic) do
+  def delete_topic(%Topic{} = topic, _current_user) do
     Repo.delete(topic)
   end
 
@@ -316,8 +318,8 @@ defmodule PureAI.Chat do
     Message.changeset(message, attrs)
   end
 
-  defp can_create_topic?(), do: true
-  defp can_add_message?(), do: true
+  defp can_create_topic?(_current_user), do: true
+  defp can_add_message?(_current_user), do: true
 
   # defp done({:ok, %{create_topic: result}}), do: {:ok, result}
   defp done({:ok, %{create_message: result}}), do: {:ok, result}

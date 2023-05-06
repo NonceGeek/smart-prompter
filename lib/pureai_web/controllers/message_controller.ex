@@ -14,6 +14,7 @@ defmodule PureAIWeb.MessageController do
   end
 
   def create(conn, %{"message" => message_params}) do
+    # current_user = conn.assigns.current_user
     %{"topic_id" => topic_id, "content" => content} = message_params
 
     with {:ok, %Message{} = message} <- Chat.add_message(topic_id, content) do
