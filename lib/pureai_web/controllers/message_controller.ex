@@ -26,8 +26,8 @@ defmodule PureAIWeb.MessageController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    message = Chat.get_message!(id)
-    render(conn, :show, message: message)
-  end
+  # def show(conn, %{"id" => id}) do
+  #   message = Chat.get_message!(id)
+  #   render(conn, :show, message: message)
+  # end
 end

@@ -90,6 +90,9 @@ defmodule PureAI.Chat do
         error ->
           error
       end
+    else
+      false -> {:error, :not_authorized}
+      error -> error
     end
   end
 
@@ -174,8 +177,8 @@ defmodule PureAI.Chat do
 
       # TODO [ ] boradcast
     else
-      {:error, _} ->
-        {:error, "add message failed"}
+      false -> {:error, :not_authorized}
+      error -> error
     end
   end
 
