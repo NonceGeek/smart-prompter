@@ -33,37 +33,42 @@ defmodule PureAI.PromptTest do
       assert prompt_template.is_default == true
     end
 
-    # test "create_prompt_template/1 with invalid data returns error changeset" do
-    #   assert {:error, %Ecto.Changeset{}} = Prompt.create_prompt_template(@invalid_attrs)
-    # end
+    test "create_prompt_template/1 with invalid data returns error changeset" do
+      user = user_fixture()
+      assert {:error, %Ecto.Changeset{}} = Prompt.create_prompt_template(@invalid_attrs, user)
+    end
 
-    # test "update_prompt_template/2 with valid data updates the prompt_template" do
-    #   prompt_template = prompt_template_fixture()
-    #   update_attrs = %{content: "some updated content", is_default: false}
+    test "update_prompt_template/2 with valid data updates the prompt_template" do
+      user = user_fixture()
+      prompt_template = prompt_template_fixture(user)
+      update_attrs = %{content: "some updated content", is_default: false}
 
-    #   assert {:ok, %PromptTemplate{} = prompt_template} = Prompt.update_prompt_template(prompt_template, update_attrs)
+      assert {:ok, %PromptTemplate{} = prompt_template} = Prompt.update_prompt_template(prompt_template, update_attrs, user)
 
-    #   assert prompt_template.content == "some updated content"
-    #   assert prompt_template.is_default == false
-    # end
+      assert prompt_template.content == "some updated content"
+      assert prompt_template.is_default == false
+    end
 
-    # test "update_prompt_template/2 with invalid data returns error changeset" do
-    #   prompt_template = prompt_template_fixture()
+    test "update_prompt_template/2 with invalid data returns error changeset" do
+      user = user_fixture()
+      prompt_template = prompt_template_fixture(user)
 
-    #   assert {:error, %Ecto.Changeset{}} = Prompt.update_prompt_template(prompt_template, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Prompt.update_prompt_template(prompt_template, @invalid_attrs, user)
 
-    #   assert prompt_template == Prompt.get_prompt_template!(prompt_template.id)
-    # end
+      assert prompt_template == Prompt.get_prompt_template!(prompt_template.id)
+    end
 
-    # test "delete_prompt_template/1 deletes the prompt_template" do
-    #   prompt_template = prompt_template_fixture()
-    #   assert {:ok, %PromptTemplate{}} = Prompt.delete_prompt_template(prompt_template)
-    #   assert_raise Ecto.NoResultsError, fn -> Prompt.get_prompt_template!(prompt_template.id) end
-    # end
+    test "delete_prompt_template/1 deletes the prompt_template" do
+      user = user_fixture()
+      prompt_template = prompt_template_fixture(user)
+      assert {:ok, %PromptTemplate{}} = Prompt.delete_prompt_template(prompt_template, user)
+      assert_raise Ecto.NoResultsError, fn -> Prompt.get_prompt_template!(prompt_template.id) end
+    end
 
-    # test "change_prompt_template/1 returns a prompt_template changeset" do
-    #   prompt_template = prompt_template_fixture()
-    #   assert %Ecto.Changeset{} = Prompt.change_prompt_template(prompt_template)
-    # end
+    test "change_prompt_template/1 returns a prompt_template changeset" do
+      user = user_fixture()
+      prompt_template = prompt_template_fixture(user)
+      assert %Ecto.Changeset{} = Prompt.change_prompt_template(prompt_template)
+    end
   end
 end
