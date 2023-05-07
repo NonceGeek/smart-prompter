@@ -9,7 +9,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Features
 
-  - [ ] Generate a guest based on a cookie when the user is not logged in (OR only support logged user)
+  - [x] Generate a guest based on a cookie when the user is not logged in (OR only support logged user)
   - [x] Mock a simple OpenAI Server for develop
   - [x] RichText formatting support
   - [x] Async execution
@@ -23,7 +23,8 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## API's
 
-  [API.md](./docs/API.md)
+  - [API.md](./docs/API.md)
+
 
 ## References
 
