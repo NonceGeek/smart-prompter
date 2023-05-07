@@ -21,4 +21,11 @@ defmodule PureAIWeb.FallbackController do
     |> put_view(html: PureAIWeb.ErrorHTML, json: PureAIWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :not_authorized}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(html: PureAIWeb.ErrorHTML, json: PureAIWeb.ErrorJSON)
+    |> render(:"403")
+  end
 end

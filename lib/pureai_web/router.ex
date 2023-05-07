@@ -25,11 +25,11 @@ defmodule PureAIWeb.Router do
   end
 
   scope "/api", PureAIWeb do
-    pipe_through :api
+    pipe_through [:api, :require_authenticated_user]
 
     resources "/prompt_templates", PromptTemplateController, except: [:new, :edit]
 
-    resources "/topics", TopicController, except: [:new, :edit]
+    resources "/topics", TopicController, except: [:new, :edit, :update, :delete]
 
     # with valid topic_id
     resources "/messages", MessageController, only: [:create, :show]

@@ -9,6 +9,7 @@ defmodule PureAI.Chat do
   alias PureAI.{Repo, Turbo}
 
   alias PureAI.Prompt.PromptTemplate
+  alias PureAI.Accounts.User
   alias PureAI.Chat.{Topic, Message}
 
   @doc """
@@ -20,8 +21,9 @@ defmodule PureAI.Chat do
       [%Topic{}, ...]
 
   """
-  def list_topics do
-    Repo.all(Topic)
+  def list_topics(current_user) do
+    from(t in Topic, where: t.user_id == ^current_user.id, order_by: [asc: t.inserted_at])
+    |> Repo.all()
   end
 
   @doc """
@@ -62,16 +64,16 @@ defmodule PureAI.Chat do
   @doc """
   Creates a topic with first message
   """
-  def create_topic(attrs \\ %{}) do
+  def create_topic(attrs, current_user) do
     # - [x] create topic
     # - [x] create message
     # - [x] job -> openai
 
     attrs = PureAI.MapEnhance.atomize_keys(attrs)
 
-    with true <- can_create_topic?() do
+    with true <- can_create_topic?(current_user) do
       Multi.new()
-      |> do_create_topic(attrs)
+      |> do_create_topic(attrs, current_user)
       |> do_create_template_message(attrs)
       |> do_create_message(attrs)
       |> Repo.transaction()
@@ -81,17 +83,23 @@ defmodule PureAI.Chat do
           |> PureAI.Chat.Job.new()
           |> Oban.insert()
 
-          {:ok, Repo.preload(topic, [:messages])}
+          {:ok, topic}
+
+        # {:ok, Repo.preload(topic, [:messages])}
 
         error ->
           error
       end
+    else
+      false -> {:error, :not_authorized}
+      error -> error
     end
   end
 
-  defp do_create_topic(multi, attrs) do
+  defp do_create_topic(multi, attrs, current_user) do
     run_fn = fn _, _ ->
-      Turbo.create(Topic, attrs)
+      new_attrs = attrs |> Map.put(:user_id, current_user.id)
+      Turbo.create(Topic, new_attrs)
     end
 
     Multi.run(multi, :create_topic, run_fn)
@@ -150,7 +158,7 @@ defmodule PureAI.Chat do
   @doc """
   add topic message
   """
-  def add_message(topic_id, content) do
+  def add_message(topic_id, content, current_user) do
     request = %{
       topic_id: topic_id,
       role: :user,
@@ -158,7 +166,8 @@ defmodule PureAI.Chat do
       content: content
     }
 
-    with true <- can_add_message?(),
+    with {:ok, topic} <- Turbo.get(Topic, topic_id),
+         true <- can_add_message?(topic, current_user),
          {:ok, message} <- Turbo.create(Message, request) do
       %{type: "chat_completion", topic_id: message.topic_id}
       |> PureAI.Chat.Job.new()
@@ -168,8 +177,8 @@ defmodule PureAI.Chat do
 
       # TODO [ ] boradcast
     else
-      {:error, _} ->
-        {:error, "add message failed"}
+      false -> {:error, :not_authorized}
+      error -> error
     end
   end
 
@@ -203,7 +212,7 @@ defmodule PureAI.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_topic(%Topic{} = topic) do
+  def delete_topic(%Topic{} = topic, _current_user) do
     Repo.delete(topic)
   end
 
@@ -220,104 +229,11 @@ defmodule PureAI.Chat do
     Topic.changeset(topic, attrs)
   end
 
-  alias PureAI.Chat.Message
+  defp can_create_topic?(%User{} = _current_user), do: true
+  defp can_create_topic?(_), do: false
 
-  @doc """
-  Returns the list of messages.
-
-  ## Examples
-
-      iex> list_messages()
-      [%Message{}, ...]
-
-  """
-  def list_messages do
-    Repo.all(Message)
-  end
-
-  @doc """
-  Gets a single message.
-
-  Raises `Ecto.NoResultsError` if the Message does not exist.
-
-  ## Examples
-
-      iex> get_message!(123)
-      %Message{}
-
-      iex> get_message!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_message!(id), do: Repo.get!(Message, id)
-
-  @doc """
-  Creates a message.
-
-  ## Examples
-
-      iex> create_message(%{field: value})
-      {:ok, %Message{}}
-
-      iex> create_message(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_message(attrs \\ %{}) do
-    %Message{}
-    |> Message.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a message.
-
-  ## Examples
-
-      iex> update_message(message, %{field: new_value})
-      {:ok, %Message{}}
-
-      iex> update_message(message, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_message(%Message{} = message, attrs) do
-    message
-    |> Message.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a message.
-
-  ## Examples
-
-      iex> delete_message(message)
-      {:ok, %Message{}}
-
-      iex> delete_message(message)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_message(%Message{} = message) do
-    Repo.delete(message)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking message changes.
-
-  ## Examples
-
-      iex> change_message(message)
-      %Ecto.Changeset{data: %Message{}}
-
-  """
-  def change_message(%Message{} = message, attrs \\ %{}) do
-    Message.changeset(message, attrs)
-  end
-
-  defp can_create_topic?(), do: true
-  defp can_add_message?(), do: true
+  defp can_add_message?(%{user_id: user_id}, %{id: id} = _current_user), do: user_id == id
+  defp can_add_message?(_, _), do: false
 
   # defp done({:ok, %{create_topic: result}}), do: {:ok, result}
   defp done({:ok, %{create_message: result}}), do: {:ok, result}

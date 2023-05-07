@@ -7,14 +7,14 @@ defmodule PureAI.ChatFixtures do
   @doc """
   Generate a topic.
   """
-  def topic_fixture(attrs \\ %{}) do
+  def topic_fixture(current_user, attrs \\ %{}) do
     {:ok, topic} =
       attrs
       |> Enum.into(%{
         content: "some content",
         user_id: 42
       })
-      |> PureAI.Chat.create_topic()
+      |> PureAI.Chat.create_topic(current_user)
 
     topic
   end
