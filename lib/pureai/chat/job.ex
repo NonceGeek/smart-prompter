@@ -17,7 +17,6 @@ defmodule PureAI.Chat.Job do
       %{"finish_reason" => finish_reason, "index" => index, "message" => %{"content" => content, "role" => role}} = data
 
       Logger.debug("message: %{inspect(messages)}")
-      IO.inspect(messages, label: "messages")
 
       attrs = %{
         topic_id: topic_id,

@@ -38,7 +38,7 @@ defmodule PureAIWeb.TopicJSON do
   defp data(%Message{} = message) do
     %{
       id: message.id,
-      user_id: message.user_id,
+      # user_id: message.user_id,
       content: message.content,
       role: message.role,
       index: message.index,
