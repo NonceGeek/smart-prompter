@@ -58,35 +58,20 @@ defmodule PureAI.Prompt do
 
   @doc """
   Updates a prompt_template.
-
-  ## Examples
-
-      iex> update_prompt_template(prompt_template, %{field: new_value})
-      {:ok, %PromptTemplate{}}
-
-      iex> update_prompt_template(prompt_template, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
   def update_prompt_template(%PromptTemplate{} = prompt_template, attrs, current_user) do
     with true <- can_update_template?(prompt_template, current_user) do
       prompt_template
       |> PromptTemplate.changeset(attrs)
       |> Repo.update()
+    else
+      false -> {:error, :not_authorized}
+      error -> error
     end
   end
 
   @doc """
   Deletes a prompt_template.
-
-  ## Examples
-
-      iex> delete_prompt_template(prompt_template)
-      {:ok, %PromptTemplate{}}
-
-      iex> delete_prompt_template(prompt_template)
-      {:error, %Ecto.Changeset{}}
-
   """
   def delete_prompt_template(%PromptTemplate{} = prompt_template, current_user) do
     with true <- can_delete_template?(prompt_template, current_user) do

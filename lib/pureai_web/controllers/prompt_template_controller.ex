@@ -23,30 +23,37 @@ defmodule PureAIWeb.PromptTemplateController do
     end
   end
 
-  # def show(conn, %{"id" => id}) do
-  #   current_user = conn.assigns.current_user
+  def show(conn, %{"id" => id}) do
+    current_user = conn.assigns.current_user
 
-  #   prompt_template = Prompt.get_prompt_template!(id)
+    prompt_template = Prompt.get_prompt_template!(id)
 
-  #   render(conn, :show, prompt_template: prompt_template)
-  # end
+    if prompt_template.user_id != current_user.id do
+      conn
+      |> put_status(:forbidden)
+      |> put_view(json: PureAIWeb.ErrorJSON)
+      |> render(:"401")
+    else
+      render(conn, :show, prompt_template: prompt_template)
+    end
+  end
 
-  # def update(conn, %{"id" => id, "prompt_template" => prompt_template_params}) do
-  #   current_user = conn.assigns.current_user
-  #   prompt_template = Prompt.get_prompt_template!(id)
+  def update(conn, %{"id" => id, "prompt_template" => prompt_template_params}) do
+    current_user = conn.assigns.current_user
+    prompt_template = Prompt.get_prompt_template!(id)
 
-  #   with {:ok, %PromptTemplate{} = prompt_template} <-
-  #          Prompt.update_prompt_template(prompt_template, prompt_template_params) do
-  #     render(conn, :show, prompt_template: prompt_template)
-  #   end
-  # end
+    with {:ok, %PromptTemplate{} = prompt_template} <-
+           Prompt.update_prompt_template(prompt_template, prompt_template_params, current_user) do
+      render(conn, :show, prompt_template: prompt_template)
+    end
+  end
 
-  # def delete(conn, %{"id" => id}) do
-  #   current_user = conn.assigns.current_user
-  #   prompt_template = Prompt.get_prompt_template!(id)
+  def delete(conn, %{"id" => id}) do
+    current_user = conn.assigns.current_user
+    prompt_template = Prompt.get_prompt_template!(id)
 
-  #   with {:ok, %PromptTemplate{}} <- Prompt.delete_prompt_template(prompt_template) do
-  #     send_resp(conn, :no_content, "")
-  #   end
-  # end
+    with {:ok, %PromptTemplate{}} <- Prompt.delete_prompt_template(prompt_template, current_user) do
+      send_resp(conn, :no_content, "")
+    end
+  end
 end
