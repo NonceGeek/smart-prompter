@@ -21,6 +21,7 @@ defmodule PureAI.Factory do
 
   def message_factory() do
     %Message{
+      position: Enum.random(1..100),
       role: Enum.random(~w(system user assistant)a),
       content: sequence(:content, &"content-#{&1}")
     }

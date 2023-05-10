@@ -11,7 +11,7 @@ defmodule PureAI.Chat.Topic do
     belongs_to :user, PureAI.Accounts.User
     belongs_to :prompt_template, PureAI.Prompt.PromptTemplate
 
-    has_many :messages, PureAI.Chat.Message, foreign_key: :topic_id
+    has_many :messages, PureAI.Chat.Message, foreign_key: :topic_id, preload_order: [desc: :position]
 
     timestamps()
   end
