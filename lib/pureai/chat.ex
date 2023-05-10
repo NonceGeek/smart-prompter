@@ -22,7 +22,7 @@ defmodule PureAI.Chat do
 
   """
   def list_topics(current_user) do
-    from(t in Topic, where: t.user_id == ^current_user.id, order_by: [asc: t.inserted_at])
+    from(t in Topic, where: t.user_id == ^current_user.id, order_by: [asc: t.position])
     |> Repo.all()
   end
 
