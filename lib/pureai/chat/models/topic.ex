@@ -7,6 +7,7 @@ defmodule PureAI.Chat.Topic do
   schema "topics" do
     field :name, :string
     field :metadata, :map
+    field :model, :string
 
     belongs_to :user, PureAI.Accounts.User
     belongs_to :prompt_template, PureAI.Prompt.PromptTemplate
@@ -24,6 +25,7 @@ defmodule PureAI.Chat.Topic do
     optional_fields = ~w(
      user_id
      name
+     model
      prompt_template_id
      metadata
     )a

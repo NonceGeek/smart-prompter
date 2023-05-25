@@ -30,6 +30,7 @@ defmodule PureAIWeb.TopicJSON do
       user_id: topic.user_id,
       name: topic.name,
       prompt_template_id: topic.prompt_template_id,
+      model: topic.model,
       metadata: topic.metadata,
       messages: messages
     }

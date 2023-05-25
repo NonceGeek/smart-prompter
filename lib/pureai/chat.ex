@@ -96,6 +96,28 @@ defmodule PureAI.Chat do
     end
   end
 
+  def create_topic_with_answer(attrs, current_user) do
+    attrs = PureAI.MapEnhance.atomize_keys(attrs)
+
+    with true <- can_create_topic?(current_user) do
+      Multi.new()
+      |> do_create_topic(attrs, current_user)
+      |> do_create_question(attrs)
+      |> do_create_answer(attrs)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{create_topic: topic}} ->
+          {:ok, Repo.preload(topic, [:messages])}
+
+        error ->
+          error
+      end
+    else
+      false -> {:error, :not_authorized}
+      error -> error
+    end
+  end
+
   defp do_create_topic(multi, attrs, current_user) do
     run_fn = fn _, _ ->
       new_attrs = attrs |> Map.put(:user_id, current_user.id)
@@ -145,6 +167,48 @@ defmodule PureAI.Chat do
     end
 
     Multi.run(multi, :create_message, run_fn)
+  end
+
+  defp do_create_question(multi, %{question: question} = attrs) do
+    run_fn = fn _, %{create_topic: topic} ->
+      position =
+        case Map.get(attrs, :prompt_template_id) do
+          nil -> 1
+          _ -> 2
+        end
+
+      new_attrs = %{
+        role: :user,
+        content: question,
+        position: position,
+        topic_id: topic.id
+      }
+
+      Turbo.create(Message, new_attrs)
+    end
+
+    Multi.run(multi, :create_question, run_fn)
+  end
+
+  defp do_create_answer(multi, %{answer: answer} = attrs) do
+    run_fn = fn _, %{create_topic: topic} ->
+      position =
+        case Map.get(attrs, :prompt_template_id) do
+          nil -> 1
+          _ -> 2
+        end
+
+      new_attrs = %{
+        role: :user,
+        content: answer,
+        position: position,
+        topic_id: topic.id
+      }
+
+      Turbo.create(Message, new_attrs)
+    end
+
+    Multi.run(multi, :create_answer, run_fn)
   end
 
   def next_position(topic_id) do

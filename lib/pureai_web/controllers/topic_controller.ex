@@ -25,6 +25,17 @@ defmodule PureAIWeb.TopicController do
     end
   end
 
+  def topic_with_answer(conn, %{"topic" => topic_params}) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, %Topic{} = topic} <- Chat.create_topic_with_answer(topic_params, current_user) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", ~p"/api/topics/#{topic}")
+      |> render(:show, topic: topic)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     current_user = conn.assigns.current_user
 

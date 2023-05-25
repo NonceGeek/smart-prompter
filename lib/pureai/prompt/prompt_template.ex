@@ -7,6 +7,8 @@ defmodule PureAI.Prompt.PromptTemplate do
   schema "prompt_templates" do
     field :title, :string
     field :content, :string
+    # enum
+    field :model, :string
     field :is_default, :boolean, default: false
 
     belongs_to :user, PureAI.Accounts.User
@@ -23,6 +25,7 @@ defmodule PureAI.Prompt.PromptTemplate do
     optional_fields = ~w(
       title
       user_id
+      model
       is_default
     )a
 
