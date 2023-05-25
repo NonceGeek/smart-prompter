@@ -31,6 +31,13 @@ defmodule PureAIWeb.Router do
 
     resources "/topics", TopicController, except: [:new, :edit, :update, :delete]
 
+    ## TODO
+    # - [ ] create topic with message
+    # - [x] create topic(model)
+    # - [x] create prompt template(model)
+
+    post "/topic_with_answer", TopicController, :topic_with_answer
+
     # with valid topic_id
     resources "/messages", MessageController, only: [:create, :show]
   end
