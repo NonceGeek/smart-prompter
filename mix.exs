@@ -51,7 +51,7 @@ defmodule PureAI.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:openai, path: "../openai.ex"},
+      {:openai, github: "zven21/openai.ex"},
       {:credo, "~> 1.7"},
       # job
       {:oban, "~> 2.15"},
