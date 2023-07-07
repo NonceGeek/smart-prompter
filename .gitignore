@@ -22,6 +22,7 @@ erl_crash.dump
 
 # Temporary files, for example, from tests.
 /tmp/
+/openai.ex
 
 # Ignore package tarball (built via "mix hex.build").
 pureai-*.tar

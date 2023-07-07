@@ -60,10 +60,14 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :openai,
-  # find it at https://platform.openai.com/account/api-keys
+  api_url: System.get_env("OPENAI_URL"),
+  api_type: :azure,
+  azure_deployment_id: "gpt0301",
+  azure_api_version: "2022-12-01",
+  azure_subscription_key: System.get_env("AZURE_SUBSCRIPTION_KEY"),
   api_key: System.get_env("OPENAI_KEY"),
-  client: PureAI.OpenAIMock,
-  # client: OpenAI
+  # client: PureAI.OpenAIMock,
+  client: OpenAI,
   http_options: [recv_timeout: 60_000]
 
 # # find it at https://platform.openai.com/account/org-settings under "Organization ID"
