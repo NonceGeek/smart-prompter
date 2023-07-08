@@ -66,6 +66,12 @@ defmodule PureAI.OpenAIMock do
       %{role: "user", content: "Where was it played?"}
     ]
   )
+
+  OpenAI.chat_completion(model: "gpt-35-turbo-16k",
+    messages: [
+      %{role: "user", content: "Who won the world series in 2020?"},
+    ]
+  )
   """
   def chat_completion(clauses) do
     {:ok,
