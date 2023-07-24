@@ -19,23 +19,19 @@ defmodule PureAI.Prompt do
       [%PromptTemplate{}, ...]
 
   """
-  def list_prompt_templates do
+  def list_prompt_templates(%{"user_id" => user_id}) do
+    from(p in PromptTemplate,
+      where: p.user_id == ^user_id
+    )
+    |> Repo.all()
+  end
+
+  def list_prompt_templates(_) do
     Repo.all(PromptTemplate)
   end
 
   @doc """
   Gets a single prompt_template.
-
-  Raises `Ecto.NoResultsError` if the Prompt template does not exist.
-
-  ## Examples
-
-      iex> get_prompt_template!(123)
-      %PromptTemplate{}
-
-      iex> get_prompt_template!(456)
-      ** (Ecto.NoResultsError)
-
   """
   def get_prompt_template!(id), do: Repo.get!(PromptTemplate, id)
 
