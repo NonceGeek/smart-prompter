@@ -59,7 +59,8 @@ defmodule PureAI.MixProject do
       {:scrivener_ecto, "~> 2.7"},
 
       # faker data
-      {:ex_machina, "~> 2.7"}
+      {:ex_machina, "~> 2.7"},
+      {:tesla, "~> 1.8.0"}
     ]
   end
 
