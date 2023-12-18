@@ -40,4 +40,9 @@ defmodule PureAIWeb.EmberddingVectorController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def text_to_vector(conn, %{"text" => text}) do
+    {:ok, res} = Pureai.OpenaiEmbedding.text_to_vetor(text)
+    render(conn, :show, emberdding_vector: res)
+  end
 end

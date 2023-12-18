@@ -31,7 +31,7 @@ defmodule PureAIWeb.Router do
 
     resources "/topics", TopicController, except: [:new, :edit, :update, :delete]
     post "/topic_with_answer", TopicController, :topic_with_answer
-
+    post "/emberdding", EmberddingVectorController, :text_to_vector
     # with valid topic_id
     resources "/messages", MessageController, only: [:create, :show]
   end
