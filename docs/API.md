@@ -224,7 +224,7 @@ curl --request GET \
 ### 根据文本获取向量
 ```shell
 curl --request GET \
-  --url http://66.135.11.204/api/emberdding \
+  --url http://66.135.11.204/api/embedding \
   --header 'authorization: Bearer <<oauth_token>>'
   --data '{
     "text": "Draw a happy dog!"

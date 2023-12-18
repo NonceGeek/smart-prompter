@@ -1,4 +1,4 @@
-defmodule PureAI.Context.EmberddingVector do
+defmodule PureAI.Context.EmbeddingVector do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,8 +11,8 @@ defmodule PureAI.Context.EmberddingVector do
   end
 
   @doc false
-  def changeset(emberdding_vector, attrs) do
-    emberdding_vector
+  def changeset(embedding_vector, attrs) do
+    embedding_vector
     |> cast(attrs, [:sha, :text, :vector])
     |> validate_required([:sha, :text, :vector])
   end

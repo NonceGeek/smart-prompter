@@ -15,14 +15,14 @@ defmodule Pureai.OpenaiEmbedding do
   def text_to_vetor(client, prompt) do
     sha = hash_text(prompt)
 
-    case PureAI.Context.get_emberdding_vector_by_sha(sha) do
+    case PureAI.Context.get_embedding_vector_by_sha(sha) do
       nil ->
         mp = %{:input => prompt}
         {:ok, %Tesla.Env{status: status, body: %{"data" => [%{"embedding" => vectors}]}}} = Tesla.post(client, "/deployments/text-embedding-ada-002/embeddings?api-version=2023-06-01-preview", mp)
 
         case status do
           200 ->
-            PureAI.Context.create_emberdding_vector(%{sha: sha, text: prompt, vector: Jason.encode!(vectors)})
+            PureAI.Context.create_embedding_vector(%{sha: sha, text: prompt, vector: Jason.encode!(vectors)})
           _ ->
             {:error, status}
         end

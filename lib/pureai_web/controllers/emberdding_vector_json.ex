@@ -1,26 +1,26 @@
-defmodule PureAIWeb.EmberddingVectorJSON do
-  alias PureAI.Context.EmberddingVector
+defmodule PureAIWeb.EmbeddingVectorJSON do
+  alias PureAI.Context.EmbeddingVector
 
   @doc """
   Renders a list of embedding_vector.
   """
   def index(%{embedding_vector: embedding_vector}) do
-    %{data: for(emberdding_vector <- embedding_vector, do: data(emberdding_vector))}
+    %{data: for(embedding_vector <- embedding_vector, do: data(embedding_vector))}
   end
 
   @doc """
-  Renders a single emberdding_vector.
+  Renders a single embedding_vector.
   """
-  def show(%{emberdding_vector: emberdding_vector}) do
-    %{data: data(emberdding_vector)}
+  def show(%{embedding_vector: embedding_vector}) do
+    %{data: data(embedding_vector)}
   end
 
-  defp data(%EmberddingVector{} = emberdding_vector) do
+  defp data(%EmbeddingVector{} = embedding_vector) do
     %{
-      id: emberdding_vector.id,
-      sha: emberdding_vector.sha,
-      text: emberdding_vector.text,
-      vector: emberdding_vector.vector
+      id: embedding_vector.id,
+      sha: embedding_vector.sha,
+      text: embedding_vector.text,
+      vector: embedding_vector.vector
     }
   end
 end

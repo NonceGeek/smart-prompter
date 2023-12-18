@@ -5,18 +5,18 @@ defmodule PureAI.ContextFixtures do
   """
 
   @doc """
-  Generate a emberdding_vector.
+  Generate a embedding_vector.
   """
-  def emberdding_vector_fixture(attrs \\ %{}) do
-    {:ok, emberdding_vector} =
+  def embedding_vector_fixture(attrs \\ %{}) do
+    {:ok, embedding_vector} =
       attrs
       |> Enum.into(%{
         sha: "some sha",
         text: "some text",
         vector: "some vector"
       })
-      |> PureAI.Context.create_emberdding_vector()
+      |> PureAI.Context.create_embedding_vector()
 
-    emberdding_vector
+    embedding_vector
   end
 end

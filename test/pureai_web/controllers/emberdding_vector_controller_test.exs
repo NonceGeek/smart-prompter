@@ -1,9 +1,9 @@
-defmodule PureAIWeb.EmberddingVectorControllerTest do
+defmodule PureAIWeb.EmbeddingVectorControllerTest do
   use PureAIWeb.ConnCase
 
   import PureAI.ContextFixtures
 
-  alias PureAI.Context.EmberddingVector
+  alias PureAI.Context.EmbeddingVector
 
   @create_attrs %{
     sha: "some sha",
@@ -28,9 +28,9 @@ defmodule PureAIWeb.EmberddingVectorControllerTest do
     end
   end
 
-  describe "create emberdding_vector" do
-    test "renders emberdding_vector when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/api/embedding_vector", emberdding_vector: @create_attrs)
+  describe "create embedding_vector" do
+    test "renders embedding_vector when data is valid", %{conn: conn} do
+      conn = post(conn, ~p"/api/embedding_vector", embedding_vector: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, ~p"/api/embedding_vector/#{id}")
@@ -44,16 +44,16 @@ defmodule PureAIWeb.EmberddingVectorControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/api/embedding_vector", emberdding_vector: @invalid_attrs)
+      conn = post(conn, ~p"/api/embedding_vector", embedding_vector: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
-  describe "update emberdding_vector" do
-    setup [:create_emberdding_vector]
+  describe "update embedding_vector" do
+    setup [:create_embedding_vector]
 
-    test "renders emberdding_vector when data is valid", %{conn: conn, emberdding_vector: %EmberddingVector{id: id} = emberdding_vector} do
-      conn = put(conn, ~p"/api/embedding_vector/#{emberdding_vector}", emberdding_vector: @update_attrs)
+    test "renders embedding_vector when data is valid", %{conn: conn, embedding_vector: %EmbeddingVector{id: id} = embedding_vector} do
+      conn = put(conn, ~p"/api/embedding_vector/#{embedding_vector}", embedding_vector: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, ~p"/api/embedding_vector/#{id}")
@@ -66,27 +66,27 @@ defmodule PureAIWeb.EmberddingVectorControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
-    test "renders errors when data is invalid", %{conn: conn, emberdding_vector: emberdding_vector} do
-      conn = put(conn, ~p"/api/embedding_vector/#{emberdding_vector}", emberdding_vector: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, embedding_vector: embedding_vector} do
+      conn = put(conn, ~p"/api/embedding_vector/#{embedding_vector}", embedding_vector: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
-  describe "delete emberdding_vector" do
-    setup [:create_emberdding_vector]
+  describe "delete embedding_vector" do
+    setup [:create_embedding_vector]
 
-    test "deletes chosen emberdding_vector", %{conn: conn, emberdding_vector: emberdding_vector} do
-      conn = delete(conn, ~p"/api/embedding_vector/#{emberdding_vector}")
+    test "deletes chosen embedding_vector", %{conn: conn, embedding_vector: embedding_vector} do
+      conn = delete(conn, ~p"/api/embedding_vector/#{embedding_vector}")
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, ~p"/api/embedding_vector/#{emberdding_vector}")
+        get(conn, ~p"/api/embedding_vector/#{embedding_vector}")
       end
     end
   end
 
-  defp create_emberdding_vector(_) do
-    emberdding_vector = emberdding_vector_fixture()
-    %{emberdding_vector: emberdding_vector}
+  defp create_embedding_vector(_) do
+    embedding_vector = embedding_vector_fixture()
+    %{embedding_vector: embedding_vector}
   end
 end

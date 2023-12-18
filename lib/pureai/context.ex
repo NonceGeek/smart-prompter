@@ -6,7 +6,7 @@ defmodule PureAI.Context do
   import Ecto.Query, warn: false
   alias PureAI.Repo
 
-  alias PureAI.Context.EmberddingVector
+  alias PureAI.Context.EmbeddingVector
 
   @doc """
   Returns the list of embedding_vector.
@@ -14,105 +14,105 @@ defmodule PureAI.Context do
   ## Examples
 
       iex> list_embedding_vector()
-      [%EmberddingVector{}, ...]
+      [%EmbeddingVector{}, ...]
 
   """
   def list_embedding_vector do
-    Repo.all(EmberddingVector)
+    Repo.all(EmbeddingVector)
   end
   @doc """
-  Gets a single emberdding_vector by sha.
+  Gets a single embedding_vector by sha.
 
-  return nil if the Emberdding vector does not exist.
+  return nil if the embedding vector does not exist.
 
   ## Examples
 
-      iex> get_emberdding_vector_by_sha("xxxx")
-      %EmberddingVector{}
-      iex> get_emberdding_vector_by_sha("")
+      iex> get_embedding_vector_by_sha("xxxx")
+      %EmbeddingVector{}
+      iex> get_embedding_vector_by_sha("")
       nil
 
   """
 
-  def get_emberdding_vector_by_sha(sha), do: Repo.get_by(EmberddingVector, %{:sha => sha})
+  def get_embedding_vector_by_sha(sha), do: Repo.get_by(EmbeddingVector, %{:sha => sha})
   @doc """
-  Gets a single emberdding_vector.
+  Gets a single embedding_vector.
 
-  Raises `Ecto.NoResultsError` if the Emberdding vector does not exist.
+  Raises `Ecto.NoResultsError` if the embedding vector does not exist.
 
   ## Examples
 
-      iex> get_emberdding_vector!(123)
-      %EmberddingVector{}
+      iex> get_embedding_vector!(123)
+      %EmbeddingVector{}
 
-      iex> get_emberdding_vector!(456)
+      iex> get_embedding_vector!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_emberdding_vector!(id), do: Repo.get!(EmberddingVector, id)
+  def get_embedding_vector!(id), do: Repo.get!(EmbeddingVector, id)
 
   @doc """
-  Creates a emberdding_vector.
+  Creates a embedding_vector.
 
   ## Examples
 
-      iex> create_emberdding_vector(%{field: value})
-      {:ok, %EmberddingVector{}}
+      iex> create_embedding_vector(%{field: value})
+      {:ok, %EmbeddingVector{}}
 
-      iex> create_emberdding_vector(%{field: bad_value})
+      iex> create_embedding_vector(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_emberdding_vector(attrs \\ %{}) do
-    %EmberddingVector{}
-    |> EmberddingVector.changeset(attrs)
+  def create_embedding_vector(attrs \\ %{}) do
+    %EmbeddingVector{}
+    |> EmbeddingVector.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a emberdding_vector.
+  Updates a embedding_vector.
 
   ## Examples
 
-      iex> update_emberdding_vector(emberdding_vector, %{field: new_value})
-      {:ok, %EmberddingVector{}}
+      iex> update_embedding_vector(embedding_vector, %{field: new_value})
+      {:ok, %EmbeddingVector{}}
 
-      iex> update_emberdding_vector(emberdding_vector, %{field: bad_value})
+      iex> update_embedding_vector(embedding_vector, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_emberdding_vector(%EmberddingVector{} = emberdding_vector, attrs) do
-    emberdding_vector
-    |> EmberddingVector.changeset(attrs)
+  def update_embedding_vector(%EmbeddingVector{} = embedding_vector, attrs) do
+    embedding_vector
+    |> EmbeddingVector.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a emberdding_vector.
+  Deletes a embedding_vector.
 
   ## Examples
 
-      iex> delete_emberdding_vector(emberdding_vector)
-      {:ok, %EmberddingVector{}}
+      iex> delete_embedding_vector(embedding_vector)
+      {:ok, %EmbeddingVector{}}
 
-      iex> delete_emberdding_vector(emberdding_vector)
+      iex> delete_embedding_vector(embedding_vector)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_emberdding_vector(%EmberddingVector{} = emberdding_vector) do
-    Repo.delete(emberdding_vector)
+  def delete_embedding_vector(%EmbeddingVector{} = embedding_vector) do
+    Repo.delete(embedding_vector)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking emberdding_vector changes.
+  Returns an `%Ecto.Changeset{}` for tracking embedding_vector changes.
 
   ## Examples
 
-      iex> change_emberdding_vector(emberdding_vector)
-      %Ecto.Changeset{data: %EmberddingVector{}}
+      iex> change_embedding_vector(embedding_vector)
+      %Ecto.Changeset{data: %EmbeddingVector{}}
 
   """
-  def change_emberdding_vector(%EmberddingVector{} = emberdding_vector, attrs \\ %{}) do
-    EmberddingVector.changeset(emberdding_vector, attrs)
+  def change_embedding_vector(%EmbeddingVector{} = embedding_vector, attrs \\ %{}) do
+    EmbeddingVector.changeset(embedding_vector, attrs)
   end
 end
