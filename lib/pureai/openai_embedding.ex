@@ -33,8 +33,8 @@ defmodule Pureai.OpenaiEmbedding do
   end
 
   def hash_text(text) do
-    binary_text = text |> String.to_charlist() |> :erlang.iolist_to_binary()
-    hashed_binary = :crypto.hash(:sha256, binary_text)
+    # binary_text = text |> String.to_charlist() |> :erlang.iolist_to_binary()
+    hashed_binary = :crypto.hash(:sha256, text)
     Base.encode16(hashed_binary, case: :lower)
   end
 end
