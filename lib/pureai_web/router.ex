@@ -20,7 +20,7 @@ defmodule PureAIWeb.Router do
 
   scope "/", PureAIWeb do
     pipe_through :browser
-
+    get "/heart_detection", HeartController, :home
     get "/", PageController, :home
   end
 
@@ -34,6 +34,8 @@ defmodule PureAIWeb.Router do
     post "/embedding", EmbeddingVectorController, :text_to_vector
     # with valid topic_id
     resources "/messages", MessageController, only: [:create, :show]
+
+
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
